@@ -1,20 +1,3 @@
-/*
-  Arduino LSM6DS3 - Accelerometer Application
-
-  This example reads the acceleration values as relative direction and degrees,
-  from the LSM6DS3 sensor and prints them to the Serial Monitor or Serial Plotter.
-
-  The circuit:
-  - Arduino Nano 33 IoT
-
-  Created by Riccardo Rizzo
-
-  Modified by Jose García
-  27 Nov 2020
-
-  This example code is in the public domain.
-*/
-
 #include <Arduino_LSM6DS3.h>
 
 float x, y, z;
