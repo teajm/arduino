@@ -22,14 +22,14 @@ void setup() {
   Serial.print("Accelerometer sample rate = ");
   Serial.print(IMU.accelerationSampleRate());
   Serial.println("Hz");
-  pinMode(13, OUTPUT);  
+  pinMode(6, OUTPUT);  
+  pinMode(9, OUTPUT);  
 }
 
 void loop() {
 
   if (IMU.accelerationAvailable()) {
     IMU.readAcceleration(x, y, z);
-
   }
   //  digitalWrite(13, HIGH); // sets the digital pin 13 on
   // delay(1000);  
@@ -49,17 +49,38 @@ void loop() {
     Serial.print("Tilting up ");
     Serial.print(degreesX);
     Serial.println("  degrees");
+    savedX = degreesX;
   }
   if (x < -0.1) {
     x = 100 * x;
     degreesX = map(x, 0, -100, 0, 90);
-    Serial.print("Tilting down ");
+    if (degreesX == savedX){
+      count = count + 1;
+    }
+    else{
+      count = 0;
+      digitalWrite(6,LOW);
+      digitalWrite(9,LOW);
+    }
+
+    Serial.print("Tilting up ");
     Serial.print(degreesX);
     Serial.println("  degrees");
+    savedX = degreesX;
   }
   if (y > 0.1) {
     y = 100 * y;
     degreesY = map(y, 0, 97, 0, 90);
+        if (degreesY == savedY){
+      count = count + 1;
+    }
+    else{
+      count = 0;
+      digitalWrite(6,LOW);
+      digitalWrite(9,LOW);
+    }
+
+    savedX = degreesY;
     Serial.print("Tilting left ");
     Serial.print(degreesY);
     Serial.println("  degrees");
@@ -67,13 +88,30 @@ void loop() {
   if (y < -0.1) {
     y = 100 * y;
     degreesY = map(y, 0, -100, 0, 90);
+    if (degreesY == savedY){
+      count = count + 1;
+    }
+    else{
+      count = 0;
+      digitalWrite(6,LOW);
+      digitalWrite(9,LOW);
+    }
+
+    savedY = degreesY;
     Serial.print("Tilting right ");
     Serial.print(degreesY);
     Serial.println("  degrees");
   }
+  
+  if(x == 0 && y == 0){
+    Serial.print("Neutral")
+    count = count + 1;
+  }
+  
   if(count == 20){
     digitalWrite(6,HIGH);
     digitalWrite(9,HIGH);
   }
+  
   delay(1000);
 }
