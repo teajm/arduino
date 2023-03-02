@@ -1,4 +1,6 @@
+
 #include <Arduino_LSM6DS3.h>
+#include <Arduino.h>
 
 float x, y, z;
 int degreesX = 0;
@@ -41,7 +43,7 @@ void loop() {
     else{
       count = 0;
       digitalWrite(6,LOW);
-      digitalwrite(9,LOW);
+      digitalWrite(9,LOW);
     }
 
     Serial.print("Tilting up ");
@@ -71,7 +73,7 @@ void loop() {
   }
   if(count == 20){
     digitalWrite(6,HIGH);
-    digitalwrite(9,HIGH);
+    digitalWrite(9,HIGH);
   }
   delay(1000);
 }
