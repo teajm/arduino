@@ -80,7 +80,7 @@ void loop() {
       digitalWrite(9,LOW);
     }
 
-    savedX = degreesY;
+    savedY = degreesY;
     Serial.print("Tilting left ");
     Serial.print(degreesY);
     Serial.println("  degrees");
