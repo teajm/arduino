@@ -25,6 +25,7 @@ void setup() {
   pinMode(6, OUTPUT);  
   Serial.println("setting pin 9");
   pinMode(9, OUTPUT);  
+  
 }
 
 void loop() {
@@ -103,7 +104,7 @@ void loop() {
     Serial.println("  degrees");
   }
 
-  if(x == 0 && y == 0){
+  if(x == 0 || y == 0){
     Serial.print("Neutral");
     countY++;
   }
