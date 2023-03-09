@@ -25,7 +25,6 @@ void setup() {
   pinMode(6, OUTPUT);  
   Serial.println("setting pin 9");
   pinMode(9, OUTPUT);  
-  
 }
 
 void loop() {
