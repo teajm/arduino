@@ -10,6 +10,7 @@ int countY = 0;
 int savedX = 0;
 int savedY = 0;
 
+//starts accel, configures LED pins to output mode.
 void setup() {
   Serial.begin(9600);
   while (!Serial);
@@ -26,7 +27,8 @@ void setup() {
   Serial.println("setting pin 9");
   pinMode(9, OUTPUT);  
 }
-
+//tracks accel data to note changes w/ a 3 degree buffer.
+//if no changes have happened within 20 seconds, flash LEDs.
 void loop() {
   if (IMU.accelerationAvailable()) {
     IMU.readAcceleration(x, y, z);
