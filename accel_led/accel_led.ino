@@ -23,9 +23,9 @@ void setup() {
   Serial.print(IMU.accelerationSampleRate());
   Serial.println("Hz");
   Serial.println("setting pin 6");
-  pinMode(6, OUTPUT);  
+  pinMode(6, INPUT);  
   Serial.println("setting pin 9");
-  pinMode(9, OUTPUT);  
+  pinMode(9, INPUT);  
 }
 //tracks accel data to note changes w/ a 3 degree buffer.
 //if no changes have happened within 20 seconds, flash LEDs.
