@@ -1,7 +1,10 @@
 
-#include <Arduino_LSM9DS1.h>
+
 #include <Adafruit_MMA8451.h>
 #include <Arduino.h>
+
+Adafruit_MMA8451 mma = Adafruit_MMA8451();
+sensors_event_t event; 
 
 float x, y, z;
 int degreesX = 0;
@@ -10,22 +13,13 @@ int count = 0;
 int countY = 0;
 int savedX = 0;
 int savedY = 0;
-Adafruit_MMA8451 mma = Adafruit_MMA8451();
-sensors_event_t event; 
+
 
 //starts accel, configures LED pins to output mode.
 void setup() {
   Serial.begin(9600);
   while (!Serial);
   Serial.println("Started");
-  // if (!IMU.begin()) {
-  //   Serial.println("Failed to initialize IMU!");
-  //   while (1);
-  // }
-  // Serial.print("Accelerometer sample rate = ");
-  // Serial.print(IMU.accelerationSampleRate());
-  // Serial.println("Hz");
-
   if (!mma.begin()){
     Serial.println("Could not start MMA8451");
     while(1);
