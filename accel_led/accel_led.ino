@@ -1,5 +1,6 @@
 
 #include <Arduino_LSM9DS1.h>
+#include <Adafruit_MMA8451.h>
 #include <Arduino.h>
 
 float x, y, z;
@@ -9,19 +10,28 @@ int count = 0;
 int countY = 0;
 int savedX = 0;
 int savedY = 0;
+Adafruit_MMA8451 mma = Adafruit_MMA8451();
+sensors_event_t event; 
 
 //starts accel, configures LED pins to output mode.
 void setup() {
   Serial.begin(9600);
   while (!Serial);
   Serial.println("Started");
-  if (!IMU.begin()) {
-    Serial.println("Failed to initialize IMU!");
-    while (1);
+  // if (!IMU.begin()) {
+  //   Serial.println("Failed to initialize IMU!");
+  //   while (1);
+  // }
+  // Serial.print("Accelerometer sample rate = ");
+  // Serial.print(IMU.accelerationSampleRate());
+  // Serial.println("Hz");
+
+  if (!mma.begin()){
+    Serial.println("Could not start MMA8451");
+    while(1);
   }
-  Serial.print("Accelerometer sample rate = ");
-  Serial.print(IMU.accelerationSampleRate());
-  Serial.println("Hz");
+  Serial.println("MMA8451 Started");
+  mma.setRange(MMA8451_RANGE_4_G);
   Serial.println("setting pin 6");
   pinMode(6, INPUT);  
   Serial.println("setting pin 9");
@@ -30,13 +40,11 @@ void setup() {
 //tracks accel data to note changes w/ a 3 degree buffer.
 //if no changes have happened within 20 seconds, flash LEDs.
 void loop() {
-  if (IMU.accelerationAvailable()) {
-    IMU.readAcceleration(x, y, z);
-  }
+  mma.getEvent(&event);
 
-  if (x > 0.1) {
-    x = 100 * x;
-    degreesX = map(x, 0, 97, 0, 90);
+  if (event.acceleration.x > 0.1) {
+    degreesX= 100 * event.acceleration.x;
+    // degreesX = map(x, 0, 97, 0, 90);
     if (degreesX >= savedX - 3 && degreesX <= savedX + 3){
       count++;
     }
@@ -51,9 +59,9 @@ void loop() {
     savedX = degreesX;
   }
 
-  if (x < -0.1){
-    x = 100 * x;
-    degreesX = map(x, 0, -100, 0, 90);
+  if (event.acceleration.x < -0.1){
+    degreesX = 100 * event.acceleration.x;
+    // degreesX = map(x, 0, -100, 0, 90);
     if (degreesX >= savedX - 3 && degreesX <= savedX + 3){
       count = count + 1;
     }
@@ -69,9 +77,9 @@ void loop() {
     savedX = degreesX;
   }
 
-  if (y > 0.1) {
-    y = 100 * y;
-    degreesY = map(y, 0, 97, 0, 90);
+  if (event.acceleration.y > 0.1) {
+    degreesY = 100 * event.acceleration.y;
+    // degreesY = map(y, 0, 97, 0, 90);
     if (degreesY >= savedY - 3 && degreesY <= savedY + 3){
       count++;
     }
@@ -87,9 +95,9 @@ void loop() {
     Serial.println("  degrees");
   }
 
-  if (y < -0.1) {
-    y = 100 * y;
-    degreesY = map(y, 0, -100, 0, 90);
+  if (event.acceleration.y < -0.1) {
+    degreesY = 100 * event.acceleration.y;
+    // degreesY = map(y, 0, -100, 0, 90);
     if (degreesY >= savedY - 3 && degreesY <= savedY + 5){
       countY++;
     }
@@ -105,7 +113,7 @@ void loop() {
     Serial.println("  degrees");
   }
 
-  if(x == 0 || y == 0){
+  if(event.acceleration.x == 0 || event.acceleration.y == 0){
     Serial.print("Neutral");
     countY++;
   }
