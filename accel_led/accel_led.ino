@@ -13,7 +13,7 @@ int count = 0;
 int countY = 0;
 int savedX = 0;
 int savedY = 0;
-int offsetPos = 10;
+int OFFSET = 10;
 
 
 //starts accel, configures LED pins to output mode.
@@ -41,7 +41,7 @@ void loop() {
   if (event.acceleration.x > 0.1) {
     degreesX= 100 * event.acceleration.x;
     // degreesX = map(x, 0, 97, 0, 90);
-    if (degreesX >= savedX - offsetPos && degreesX <= savedX + offsetPos){
+    if (degreesX >= savedX - OFFSET && degreesX <= savedX + OFFSET){
       count++;
     }
     else{
@@ -58,7 +58,7 @@ void loop() {
   if (event.acceleration.x < -0.1){
     degreesX = 100 * event.acceleration.x;
     // degreesX = map(x, 0, -100, 0, 90);
-    if (degreesX >= savedX - offsetPos && degreesX <= savedX + offsetPos){
+    if (degreesX >= savedX - OFFSET && degreesX <= savedX + OFFSET){
       count = count + 1;
     }
     else{
@@ -76,7 +76,7 @@ void loop() {
   if (event.acceleration.y > 0.1) {
     degreesY = 100 * event.acceleration.y;
     // degreesY = map(y, 0, 97, 0, 90);
-    if (degreesY >= savedY - offsetPos && degreesY <= savedY + offsetPos){
+    if (degreesY >= savedY - OFFSET && degreesY <= savedY + OFFSET){
       count++;
     }
     else{
@@ -94,7 +94,7 @@ void loop() {
   if (event.acceleration.y < -0.1) {
     degreesY = 100 * event.acceleration.y;
     // degreesY = map(y, 0, -100, 0, 90);
-    if (degreesY >= savedY - offsetPos && degreesY <= savedY + offsetPos){
+    if (degreesY >= savedY - OFFSET && degreesY <= savedY + OFFSET){
       countY++;
     }
     else{
