@@ -1,10 +1,8 @@
-
-
+#include <Wire.h>
 #include <Adafruit_MMA8451.h>
-#include <Arduino.h>
+#include <Adafruit_Sensor.h>
 
 Adafruit_MMA8451 mma = Adafruit_MMA8451();
-sensors_event_t event; 
 
 float x, y, z;
 int degreesX = 0;
@@ -13,28 +11,30 @@ int count = 0;
 int countY = 0;
 int savedX = 0;
 int savedY = 0;
-int OFFSET = 10;
 
+const int OFFSET = 3; // 3-degree buffer
 
-//starts accel, configures LED pins to output mode.
 void setup() {
   Serial.begin(9600);
   while (!Serial);
   Serial.println("Started");
-  if (!mma.begin()){
-    Serial.println("Could not start MMA8451");
-    while(1);
+
+  if (!mma.begin()) {
+    Serial.println("Failed to initialize MMA8451!");
+    while (1);
   }
-  Serial.println("MMA8451 Started");
-  mma.setRange(MMA8451_RANGE_2_G);
+  Serial.println("MMA8451 found!");
+
   Serial.println("setting pin 6");
-  pinMode(6, OUTPUT);  
+  pinMode(6, OUTPUT);  // LED pin
   Serial.println("setting pin 9");
-  pinMode(9, OUTPUT);  
+  pinMode(9, OUTPUT);  // LED pin
 }
-//tracks accel data to note changes w/ a 3 degree buffer.
-//if no changes have happened within 20 seconds, flash LEDs.
+
 void loop() {
+  sensors_event_t event;
+  mma.getEvent(&event);
+
   mma.getEvent(&event);
   Serial.println(event.acceleration.x*100);
   Serial.println(event.acceleration.y*100);
